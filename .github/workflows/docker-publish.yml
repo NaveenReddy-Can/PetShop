@@ -20,5 +20,5 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t my-dockerhub-username/my-app-name .
-        docker push my-dockerhub-username/my-app-name
+        docker build -t naveenreddykb/petshop.
+        docker push naveenreddykb/petshop.
