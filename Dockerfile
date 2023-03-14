@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/framework/runtime:4.7.2-windowsservercore-ltsc2019
 
 # Set the working directory to the app directory
-WORKDIR C:\PetShop
+WORKDIR C:\app
 
 # Copy the app files to the working directory
 COPY . .
