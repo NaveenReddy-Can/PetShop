@@ -1,20 +1,16 @@
-# Use the microsoft/dotnet-framework image as the base image
-FROM microsoft/dotnet-framework:4.7.2-sdk
-
-# Set the working directory to the app directory
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR /app
 
-# Copy the contents of the local directory to the container's app directory
-COPY . .
+# Copy csproj and restore as distinct layers
+COPY *.csproj ./
+RUN dotnet restore
 
-# Build the PetShop application
-RUN msbuild PetShop.sln /p:Configuration=Release
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
 
-# Set the working directory to the output directory
-WORKDIR /app/PetShop.Web/bin/Release
-
-# Expose port 80 for the PetShop app
-EXPOSE 80
-
-# Start the PetShop app
-CMD ["PetShop.Web.exe"]
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+WORKDIR /app
+COPY --from=build-env /app/out .
+CMD ["dotnet", "PetShop.dll"]
