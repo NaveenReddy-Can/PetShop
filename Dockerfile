@@ -1,16 +1,15 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+# Use an official Microsoft ASP.NET runtime as a parent image
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.7.2
+
+# Set the working directory to /app
 WORKDIR /app
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
+# Copy the contents of the PetShop application to the container
+COPY . .
 
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
+# Restore NuGet packages and build the application
+RUN nuget restore && \
+    msbuild /p:Configuration=Release
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
-WORKDIR /app
-COPY --from=build-env /app/out .
-CMD ["dotnet", "PetShop.dll"]
+# Set the entry point for the container
+ENTRYPOINT ["PetShop.exe"]
