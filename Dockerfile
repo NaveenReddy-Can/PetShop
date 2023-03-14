@@ -2,13 +2,13 @@
 FROM mcr.microsoft.com/dotnet/framework/runtime:4.7.2-windowsservercore-ltsc2019
 
 # Set the working directory to the app directory
-WORKDIR C:\petshop
+WORKDIR C:\PetShop
 
 # Copy the app files to the working directory
 COPY . .
 
 # Expose the port used by the app
-EXPOSE 5000
+EXPOSE 80
 
 # Start the app
-CMD ["PetShopApp.exe"]
+CMD ["PetShop.Web.dll"]
