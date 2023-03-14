@@ -1,14 +1,20 @@
-# Base image with .NET Framework 4.7.2 installed
-FROM mcr.microsoft.com/dotnet/framework/runtime:4.7.2-windowsservercore-ltsc2019
+# Use the microsoft/dotnet-framework image as the base image
+FROM microsoft/dotnet-framework:4.7.2-sdk
 
 # Set the working directory to the app directory
-WORKDIR C:\app
+WORKDIR /app
 
-# Copy the app files to the working directory
+# Copy the contents of the local directory to the container's app directory
 COPY . .
 
-# Expose the port used by the app
+# Build the PetShop application
+RUN msbuild PetShop.sln /p:Configuration=Release
+
+# Set the working directory to the output directory
+WORKDIR /app/PetShop.Web/bin/Release
+
+# Expose port 80 for the PetShop app
 EXPOSE 80
 
-# Start the app
-CMD ["PetShop.Web.dll"]
+# Start the PetShop app
+CMD ["PetShop.Web.exe"]
