@@ -20,5 +20,5 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t naveenreddykb/petshop.
+        docker build -t mypetshop.
         docker push naveenreddykb/petshop.
